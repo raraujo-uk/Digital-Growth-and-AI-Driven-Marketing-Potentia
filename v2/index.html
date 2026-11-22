@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 120'><rect width='120' height='120' rx='26' fill='%23F4F5F7'/><rect x='28' y='64' width='18' height='36' rx='4' fill='%230B0F1A'/><rect x='51' y='44' width='18' height='56' rx='4' fill='%230B0F1A'/><rect x='74' y='18' width='18' height='82' rx='4' fill='%23E5202E'/></svg>">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Potentia: meça sua energia com endocrinologia e dados</title>
+  <meta name="description" content="Treino, dieta, exames e endocrinologia num só acompanhamento, com dados cruzados por IA. Plano de R$ 1.000 por mês, custos à parte declarados.">
+  <link rel="preload" href="fonts/archivo-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="hero.webp" as="image" type="image/webp" fetchpriority="high">
+  <script>document.documentElement.classList.add('js');</script>
+  <style>
+    @font-face {
+      font-family: "Source Sans 3";
+      src: url("fonts/source-sans-3-latin.woff2") format("woff2");
+      font-weight: 200 900;
+      font-style: normal;
+      font-display: swap;
+    }
+
+    @font-face {
+      font-family: "Archivo";
+      src: url("fonts/archivo-latin.woff2") format("woff2");
+      font-weight: 100 900;
+      font-stretch: 62% 125%;
+      font-style: normal;
+      font-display: swap;
+    }
+
+    :root {
+      --color-bg: #0B0F1A;
+      --color-bg-deep: #070A12;
+      --color-text: #F4F5F7;
+      --color-text-light: #AEB6C4;
+      --color-blue: #14213D;
+      --color-blue-accent: #5B9BFF;
+      --color-red: #E5202E;
+      --color-red-hover: #B8101F;
+      --color-white: #FFFFFF;
+      --color-border: rgba(244, 245, 247, 0.14);
+
+      --font-heading: "Archivo", system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      --font-body: "Source Sans 3", system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+
+      --container-width: 1200px;
+      --padding-mobile: 20px;
+      --padding-desktop: 32px;
+      --section-gap-mobile: 60px;
+      --section-gap-desktop: 120px;
+
+      --transition-fast: 300ms;
+      --transition-medium: 600ms;
+      --easing: ease-in-out;
+      --reveal-delay: 400ms;
+
+      --radius-sm: 8px;
+      --radius-md: 16px;
+      --radius-pill: 30px;
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--color-bg);
+      color: var(--color-text);
+      font-family: var(--font-body);
+      font-size: 1rem;
+      line-height: 1.7;
+    }
+    h1, h2, h3 {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      line-height: 1.1;
+      margin: 0 0 0.6em;
+      color: var(--color-text);
+    }
+    h1 { font-size: 2.25rem; }
+    h2 { font-size: 1.75rem; }
+    h3 { font-size: 1.25rem; }
+    p { margin: 0 0 1em; color: var(--color-text-light); }
+    ul { margin: 0; }
+
+    @media (min-width: 768px) {
+      h1 { font-size: 3.75rem; }
+      h2 { font-size: 2.5rem; }
+    }
+
+    .container {
+      max-width: var(--container-width);
+      margin: 0 auto;
+      padding: 0 var(--padding-mobile);
+    }
+    @media (min-width: 768px) {
+      .container { padding: 0 var(--padding-desktop); }
+    }
+
+    .section {
+      padding: var(--section-gap-mobile) 0;
+      border-top: 1px solid var(--color-border);
+      content-visibility: auto;
+      contain-intrinsic-size: auto 700px;
+    }
+    @media (min-width: 768px) {
+      .section { padding: var(--section-gap-desktop) 0; }
+    }
+    .section-head { margin-bottom: 40px; max-width: 46ch; }
+    .section-head p { font-size: 1.125rem; }
+
+    a:focus-visible, button:focus-visible, summary:focus-visible, input:focus-visible {
+      outline: 3px solid var(--color-blue-accent);
+      outline-offset: 3px;
+    }
+
+    /* Cabeçalho */
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      height: 76px;
+      display: flex;
+      align-items: center;
+      background: rgba(11, 15, 26, 0.72);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--color-border);
+      transition: transform var(--transition-fast) var(--easing);
+    }
+    .site-header.oculto { transform: translateY(-100%); }
+    @media (min-width: 768px) {
+      .site-header { height: 100px; }
+    }
+    .site-header .container {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+    .marca {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--color-text);
+      text-decoration: none;
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: 1.25rem;
+    }
+    .marca svg { width: 36px; height: 36px; flex: none; }
+    .nav { display: none; gap: 24px; }
+    .nav a {
+      color: var(--color-text-light);
+      text-decoration: none;
+      font-size: 0.875rem;
+    }
+    .nav a:hover { color: var(--color-text); }
+    @media (min-width: 768px) {
+      .nav { display: flex; }
+    }
+
+    /* Botões: um só CTA em toda a página */
+    .btn {
+      display: inline-block;
+      min-height: 44px;
+      height: 56px;
+      line-height: 52px;
+      padding: 0 26px;
+      border: 2px solid transparent;
+      border-radius: var(--radius-pill);
+      font-family: var(--font-body);
+      font-weight: 600;
+      font-size: 1rem;
+      text-align: center;
+      text-decoration: none;
+      cursor: pointer;
+      transition: transform var(--transition-fast) var(--easing), background-color var(--transition-fast) var(--easing);
+    }
+    .btn-primary {
+      background: var(--color-red);
+      color: var(--color-white);
+    }
+    .btn-primary:hover {
+      background: var(--color-red-hover);
+      transform: scale(1.05);
+    }
+    .btn-sm {
+      height: 44px;
+      line-height: 40px;
+      padding: 0 18px;
+      font-size: 0.9rem;
+    }
+
+    /* Hero */
+    .hero { padding: 48px 0 60px; }
+    @media (min-width: 768px) {
+      .hero { padding: 96px 0 120px; }
+    }
+    .hero .container {
+      display: grid;
+      gap: 40px;
+      align-items: center;
+    }
+    @media (min-width: 768px) {
+      .hero .container {
+        grid-template-columns: 1fr 1fr;
+        gap: 64px;
+      }
+    }
+    .hero .sub {
+      font-size: 1.25rem;
+      color: var(--color-text);
+      max-width: 34ch;
+      margin-bottom: 28px;
+    }
+    .hero .nota {
+      font-size: 0.875rem;
+      margin: 14px 0 0;
+    }
+    .hero-foto {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 4 / 5;
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      background: var(--color-blue);
+    }
+    .hero-foto img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center 20%;
+      display: block;
+    }
+    .hero-foto::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 6px;
+      background: var(--color-red);
+    }
+
+    /* Cards de benefício */
+    .grid { display: grid; gap: 20px; }
+    @media (min-width: 768px) {
+      .grid-3 { grid-template-columns: repeat(3, 1fr); }
+    }
+    .card {
+      background: var(--color-blue);
+      border-radius: var(--radius-md);
+      padding: 28px;
+      border-top: 4px solid var(--color-red);
+      transition: transform var(--transition-medium) var(--easing), box-shadow var(--transition-medium) var(--easing);
+    }
+    .card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 24px rgba(0, 0, 0, 0.4);
+    }
+    .card .numero {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: 1.875rem;
+      line-height: 1;
+      color: var(--color-blue-accent);
+      margin-bottom: 12px;
+    }
+    .card h3 { margin-bottom: 8px; }
+    .card p { margin: 0; }
+
+    /* Prova social */
+    .selo {
+      display: inline-block;
+      border: 1px solid var(--color-blue-accent);
+      color: var(--color-blue-accent);
+      border-radius: 999px;
+      padding: 4px 12px;
+      font-size: 0.8125rem;
+      font-weight: 600;
+      margin-bottom: 12px;
+    }
+    .placeholder-texto {
+      border: 1.5px dashed var(--color-text-light);
+      border-radius: var(--radius-md);
+      padding: 24px;
+      color: var(--color-text-light);
+      font-size: 0.875rem;
+      margin-top: 20px;
+    }
+
+    /* Passos */
+    .passos {
+      list-style: none;
+      padding: 0;
+      display: grid;
+      gap: 20px;
+      counter-reset: passo;
+    }
+    @media (min-width: 768px) {
+      .passos { grid-template-columns: repeat(3, 1fr); }
+    }
+    .passos li {
+      border-top: 2px solid var(--color-blue);
+      padding-top: 20px;
+    }
+    .passos li::before {
+      counter-increment: passo;
+      content: counter(passo);
+      display: block;
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: 2.25rem;
+      color: var(--color-blue-accent);
+      line-height: 1;
+      margin-bottom: 10px;
+    }
+    .passos h3 { margin-bottom: 6px; }
+    .passos p { margin: 0; }
+
+    /* Plano */
+    .plano {
+      max-width: 560px;
+      margin: 0 auto;
+      background: var(--color-blue);
+      border-radius: var(--radius-md);
+      border-top: 4px solid var(--color-red);
+      padding: 32px;
+    }
+    .plano h3 { margin-bottom: 8px; }
+    .preco {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: 2.5rem;
+      line-height: 1.1;
+      color: var(--color-text);
+      margin-bottom: 4px;
+    }
+    @media (min-width: 768px) {
+      .preco { font-size: 3rem; }
+    }
+    .plano .periodo { color: var(--color-text-light); margin-bottom: 16px; }
+    .plano ul {
+      padding-left: 1.2rem;
+      color: var(--color-text);
+      margin-bottom: 20px;
+    }
+    .plano ul li { margin-bottom: 6px; }
+    .nao-incluso {
+      font-size: 0.875rem;
+      border-top: 1px solid var(--color-border);
+      padding-top: 14px;
+      margin: 0 0 24px;
+    }
+
+    /* FAQ */
+    .faq { max-width: 760px; }
+    .faq details {
+      border-bottom: 1px solid var(--color-border);
+      padding: 18px 0;
+    }
+    .faq summary {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      min-height: 44px;
+      cursor: pointer;
+      list-style: none;
+      font-weight: 600;
+      font-size: 1.125rem;
+      color: var(--color-text);
+    }
+    .faq summary::-webkit-details-marker { display: none; }
+    .faq summary::after {
+      content: "+";
+      font-size: 1.5rem;
+      color: var(--color-blue-accent);
+      transition: transform var(--transition-fast) var(--easing);
+    }
+    .faq details[open] summary::after { transform: rotate(45deg); }
+    .faq details p { margin: 12px 0 0; }
+
+    /* Garantias */
+    .garantias { list-style: none; padding: 0; }
+    .garantias li {
+      padding: 16px 0;
+      border-bottom: 1px solid var(--color-border);
+    }
+    .garantias li strong { color: var(--color-text); display: block; margin-bottom: 4px; }
+    .garantias li p { margin: 0; }
+
+    /* Formulário */
+    .form {
+      display: grid;
+      gap: 16px;
+      max-width: 520px;
+      margin: 0 auto;
+      background: var(--color-blue);
+      border-radius: var(--radius-md);
+      border-top: 4px solid var(--color-red);
+      padding: 32px;
+    }
+    .form label {
+      display: grid;
+      gap: 6px;
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: var(--color-text);
+    }
+    .form input[type="text"],
+    .form input[type="email"],
+    .form input[type="tel"] {
+      height: 48px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--color-border);
+      background: var(--color-bg);
+      color: var(--color-text);
+      padding: 0 14px;
+      font-family: inherit;
+      font-size: 16px;
+    }
+    .consentimento {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      font-size: 0.875rem;
+      color: var(--color-text-light);
+    }
+    .consentimento input { width: 20px; height: 20px; margin-top: 4px; flex: none; }
+    .form .btn { width: 100%; }
+
+    /* Rodapé */
+    footer {
+      padding: 48px 0 56px;
+      border-top: 1px solid var(--color-border);
+      background: var(--color-bg-deep);
+    }
+    footer p { font-size: 0.875rem; margin-bottom: 10px; }
+    footer a { color: var(--color-text-light); }
+
+    /* Reveal ao rolar (só com JS ligado) */
+    .js .reveal {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity var(--transition-medium) var(--easing), transform var(--transition-medium) var(--easing);
+    }
+    .js .reveal.ativo { opacity: 1; transform: none; }
+    .js .reveal-delay-1 { transition-delay: var(--reveal-delay); }
+    .js .reveal-delay-2 { transition-delay: calc(var(--reveal-delay) * 2); }
+    .js .card.reveal.ativo {
+      transition: transform var(--transition-fast) var(--easing), box-shadow var(--transition-fast) var(--easing);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { transition: none !important; animation: none !important; }
+      .js .reveal { opacity: 1; transform: none; }
+    }
+  </style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container">
+    <a class="marca" href="#topo" aria-label="Potentia, voltar ao início">
+      <svg viewBox="0 0 120 120" aria-hidden="true">
+        <rect x="0" y="0" width="120" height="120" rx="26" fill="#F4F5F7"/>
+        <rect x="28" y="64" width="18" height="36" rx="4" fill="#0B0F1A"/>
+        <rect x="51" y="44" width="18" height="56" rx="4" fill="#0B0F1A"/>
+        <rect x="74" y="18" width="18" height="82" rx="4" fill="#E5202E"/>
+      </svg>
+      Potentia
+    </a>
+    <nav class="nav" aria-label="Seções da página">
+      <a href="#beneficios">Benefícios</a>
+      <a href="#como-funciona">Como funciona</a>
+      <a href="#planos">Plano</a>
+      <a href="#duvidas">Dúvidas</a>
+    </nav>
+    <a class="btn btn-primary btn-sm" href="#formulario">Quero medir minha energia</a>
+  </div>
+</header>
+
+<main>
+
+  <!-- 1. Hero -->
+  <section class="hero" id="topo">
+    <div class="container">
+      <div>
+        <h1>Meça sua energia de verdade</h1>
+        <p class="sub">Você acorda cansado há meses? Treino, dieta, exames e endocrinologia num só lugar, com dados cruzados por IA.</p>
+        <a class="btn btn-primary" href="#formulario">Quero medir minha energia</a>
+        <p class="nota">Plano mensal de R$ 1.000 por mês. Hormônios, exames, academia e alimentação são custos à parte.</p>
+      </div>
+      <div class="hero-foto">
+        <img src="hero.webp" width="756" height="1344" fetchpriority="high" decoding="async" alt="Homem forte e sorridente de braços cruzados em academia sóbria, com luz da janela ao fundo">
+              </div>
+    </div>
+  </section>
+
+  <!-- 2. Benefícios -->
+  <section class="section" id="beneficios" aria-labelledby="titulo-beneficios">
+    <div class="container">
+      <div class="section-head reveal">
+        <h2 id="titulo-beneficios">Energia para o trabalho, com números a cada ciclo</h2>
+        <p>Você ganha um acompanhamento que junta o que hoje está em silos: personal, nutrição, endocrinologia e exames.</p>
+      </div>
+      <div class="grid grid-3">
+        <article class="card reveal">
+          <div class="numero">5</div>
+          <h3>Frentes num só acompanhamento</h3>
+          <p>Treino, dieta, endocrinologia, exames e composição corporal conversam entre si, sem cada um trabalhar isolado.</p>
+        </article>
+        <article class="card reveal reveal-delay-1">
+          <div class="numero">R$ 1.000</div>
+          <h3>Por mês, num plano só</h3>
+          <p>Bioimpedância, medidas, acesso às métricas, consultas com endocrinologista e nutricionista esportivo, e personal na primeira aula de cada dia de treino.</p>
+        </article>
+        <article class="card reveal reveal-delay-2">
+          <div class="numero">1 ciclo</div>
+          <h3>Ajuste com base em dados</h3>
+          <p>Cada registro é cruzado por inteligência artificial para ajustar o protocolo, em vez de depender de palpite.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. Prova social -->
+  <section class="section" id="prova" aria-labelledby="titulo-prova">
+    <div class="container">
+      <div class="section-head reveal">
+        <h2 id="titulo-prova">Credencial médica e medição, não promessa</h2>
+        <p>Quem ajusta o seu protocolo tem formação médica e de nutrição, e cada ciclo deixa um número para comparar.</p>
+      </div>
+      <div class="grid grid-3">
+        <article class="card reveal">
+          <span class="selo">Credencial médica</span>
+          <h3>Endocrinologista no plano</h3>
+          <p>A consulta com endocrinologista faz parte do acompanhamento, não é um extra vendido à parte.</p>
+        </article>
+        <article class="card reveal reveal-delay-1">
+          <span class="selo">Medição</span>
+          <h3>Bioimpedância e medidas</h3>
+          <p>Sua composição corporal entra em números, não em sensação, e fica registrada para o próximo ciclo.</p>
+        </article>
+        <article class="card reveal reveal-delay-2">
+          <span class="selo">Depoimento fictício</span>
+          <h3>“Eu cruzava tudo sozinho”</h3>
+          <p>Marcos, 41 anos, gerente comercial (nome e perfil fictícios): “Cuidava da saúde em partes, cada um com um número diferente. Quando tudo ficou num só acompanhamento, eu parei de adivinhar e os profissionais passaram a ajustar o protocolo.”</p>
+        </article>
+      </div>
+      <p class="placeholder-texto reveal">
+        Depoimento fictício e ilustrativo, criado apenas para fins acadêmicos. Não representa um cliente real.
+      </p>
+    </div>
+  </section>
+
+  <!-- 4. Como funciona -->
+  <section class="section" id="como-funciona" aria-labelledby="titulo-como">
+    <div class="container">
+      <div class="section-head reveal">
+        <h2 id="titulo-como">Três passos, sem achismo</h2>
+        <p>Do primeiro exame ao ajuste do protocolo, cada etapa gera um dado que sustenta a próxima.</p>
+      </div>
+      <ol class="passos">
+        <li class="reveal">
+          <h3>Avaliação inicial</h3>
+          <p>Bioimpedância, medidas e exames de rotina formam a linha de base do seu acompanhamento.</p>
+        </li>
+        <li class="reveal reveal-delay-1">
+          <h3>Protocolo integrado</h3>
+          <p>Treino, dieta e endocrinologia são montados juntos, com o nutricionista esportivo e o personal.</p>
+        </li>
+        <li class="reveal reveal-delay-2">
+          <h3>Ciclo com medição</h3>
+          <p>Os dados são registrados e cruzados por IA para ajustar o protocolo a cada ciclo.</p>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- 5. Oferta e diferenciais -->
+  <section class="section" id="diferenciais" aria-labelledby="titulo-diferenciais">
+    <div class="container">
+      <div class="section-head reveal">
+        <h2 id="titulo-diferenciais">Por que juntar as frentes muda o resultado</h2>
+        <p>Alta performance no trabalho depende de corpo e mente funcionando juntos, e não só de treino.</p>
+      </div>
+      <div class="grid grid-3">
+        <article class="card reveal">
+          <h3>Integração das frentes</h3>
+          <p>Treino, dieta, endocrinologia, exames e composição corporal num único acompanhamento.</p>
+        </article>
+        <article class="card reveal reveal-delay-1">
+          <h3>IA cruzando dados</h3>
+          <p>Os dados são registrados e cruzados com inteligência artificial para ajustar protocolos.</p>
+        </article>
+        <article class="card reveal reveal-delay-2">
+          <h3>Corpo e mente juntos</h3>
+          <p>A premissa é que alta performance exige saúde física e mental ao mesmo tempo, e não apenas treino.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. Planos e preços -->
+  <section class="section" id="planos" aria-labelledby="titulo-planos">
+    <div class="container">
+      <div class="section-head reveal">
+        <h2 id="titulo-planos">Um plano, com o preço completo à vista</h2>
+        <p>Sem taxa escondida: o que está incluso e o que é custo à parte aparecem antes da contratação.</p>
+      </div>
+      <article class="plano reveal">
+        <h3>Plano mensal</h3>
+        <div class="preco">R$ 1.000</div>
+        <p class="periodo">por mês</p>
+        <ul>
+          <li>Bioimpedância e medidas antropométricas</li>
+          <li>Acesso às métricas do seu acompanhamento</li>
+          <li>Consultas com endocrinologista</li>
+          <li>Consultas com nutricionista esportivo</li>
+          <li>Personal trainer na primeira aula de cada dia de treino</li>
+        </ul>
+        <p class="nao-incluso">Não inclui hormônios, vitaminas, exames, academia, suplementação e alimentação. Esses custos são à parte e entram no seu orçamento real.</p>
+        <a class="btn btn-primary" href="#formulario">Quero medir minha energia</a>
+      </article>
+    </div>
+  </section>
+
+  <!-- 7. FAQ -->
+  <section class="section" id="duvidas" aria-labelledby="titulo-duvidas">
+    <div class="container">
+      <div class="section-head reveal">
+        <h2 id="titulo-duvidas">Dúvidas antes de medir</h2>
+      </div>
+      <div class="faq reveal">
+        <details>
+          <summary>Os hormônios estão incluídos no valor?</summary>
+          <p>Não. Hormônios, vitaminas, exames, academia, suplementação e alimentação são custos à parte.</p>
+        </details>
+        <details>
+          <summary>Quem acompanha a minha saúde?</summary>
+          <p>Consultas com endocrinologista e nutricionista esportivo fazem parte do plano, além do personal na primeira aula de cada dia de treino.</p>
+        </details>
+        <details>
+          <summary>É só um programa de academia?</summary>
+          <p>Não. O plano junta treino, dieta, exames e endocrinologia. A Potentia trata saúde e desempenho e não promete resultado estético.</p>
+        </details>
+        <details>
+          <summary>Quanto eu gasto por mês no total?</summary>
+          <p>O plano custa R$ 1.000 por mês. Some exames e os custos à parte antes de decidir.</p>
+        </details>
+        <details>
+          <summary>E se eu precisar de mais do que endocrinologia e nutrição?</summary>
+          <p>Nesse caso, o plano não cobre tudo. Esse ponto é conversado na avaliação inicial, antes de você pagar a primeira mensalidade.</p>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <!-- 8. Garantias -->
+  <section class="section" id="garantias" aria-labelledby="titulo-garantias">
+    <div class="container">
+      <div class="section-head reveal">
+        <h2 id="titulo-garantias">Você sabe o que paga antes de começar</h2>
+      </div>
+      <ul class="garantias reveal">
+        <li>
+          <strong>Custos declarados antes da contratação</strong>
+          <p>A lista do que não está incluso aparece na página, antes de qualquer pagamento.</p>
+        </li>
+        <li>
+          <strong>Medição registrada a cada ciclo</strong>
+          <p>Bioimpedância e medidas ficam salvas para você comparar o ciclo atual com o anterior.</p>
+        </li>
+        <li>
+          <strong>Cancelamento</strong>
+          <p>Você pode cancelar a qualquer momento. Com o cancelamento, a prestação de serviços termina, sem custos adicionais.</p>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 9. Formulário -->
+  <section class="section" id="formulario" aria-labelledby="titulo-formulario">
+    <div class="container">
+      <div class="section-head reveal" style="text-align:center; margin-left:auto; margin-right:auto;">
+        <h2 id="titulo-formulario">Comece pela sua medição inicial</h2>
+        <p>Deixe seus dados e a equipe entra em contato para marcar a avaliação.</p>
+      </div>
+      <!-- CRM fictício: o endereço .example é reservado e não recebe dados. Trocar pelo endpoint real ao publicar. -->
+      <form class="form reveal" id="form-lead" action="https://crm-ficticio.example/leads" method="post">
+        <label>
+          Nome
+          <input type="text" name="nome" autocomplete="name" required>
+        </label>
+        <label>
+          WhatsApp
+          <input type="tel" name="telefone" autocomplete="tel" required>
+        </label>
+        <label>
+          E-mail
+          <input type="email" name="email" autocomplete="email" required>
+        </label>
+        <label class="consentimento">
+          <input type="checkbox" name="consentimento" required>
+          <span>Concordo em receber contato da Potentia e li a política de privacidade.</span>
+        </label>
+        <button class="btn btn-primary" type="submit">Quero medir minha energia</button>
+        <p id="status-form" role="status" style="margin:0; font-size:0.875rem; color:var(--color-blue-accent);"></p>
+      </form>
+    </div>
+  </section>
+
+  <!-- 10. CTA final -->
+  <section class="section" id="cta-final" aria-labelledby="titulo-cta">
+    <div class="container" style="text-align:center;">
+      <h2 id="titulo-cta" class="reveal">Meça sua energia de verdade</h2>
+      <p class="reveal" style="max-width:46ch; margin-left:auto; margin-right:auto;">Treino, dieta, exames e endocrinologia num só acompanhamento, com números a cada ciclo.</p>
+      <div class="reveal">
+        <a class="btn btn-primary" href="#formulario">Quero medir minha energia</a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="container">
+    <a class="marca" href="#topo" aria-label="Potentia, voltar ao início" style="margin-bottom:16px;">
+      <svg viewBox="0 0 120 120" aria-hidden="true">
+        <rect x="0" y="0" width="120" height="120" rx="26" fill="#F4F5F7"/>
+        <rect x="28" y="64" width="18" height="36" rx="4" fill="#0B0F1A"/>
+        <rect x="51" y="44" width="18" height="56" rx="4" fill="#0B0F1A"/>
+        <rect x="74" y="18" width="18" height="82" rx="4" fill="#E5202E"/>
+      </svg>
+      Potentia
+    </a>
+    <p>Acompanhamento de saúde e desempenho para quem precisa de energia para render no trabalho.</p>
+    <p>CNPJ fictício: 00.000.000/0001-00 · Responsável técnico fictício: Dr. Nome Exemplo, CRM 000000 (dados fictícios, trabalho acadêmico)</p>
+    <p>Os resultados variam de pessoa para pessoa. Este programa não substitui consulta médica.</p>
+    <p>Seus dados são tratados conforme a LGPD. <a href="#">Política de privacidade</a></p>
+  </div>
+</footer>
+
+<script>
+  (function () {
+    var itens = document.querySelectorAll('.reveal');
+    if ('IntersectionObserver' in window) {
+      var observador = new IntersectionObserver(function (entradas) {
+        entradas.forEach(function (entrada) {
+          if (entrada.isIntersecting) {
+            entrada.target.classList.add('ativo');
+            observador.unobserve(entrada.target);
+          }
+        });
+      }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+      itens.forEach(function (el) { observador.observe(el); });
+    } else {
+      itens.forEach(function (el) { el.classList.add('ativo'); });
+    }
+
+    var formulario = document.getElementById('form-lead');
+    formulario.addEventListener('submit', function (e) {
+      e.preventDefault();
+      document.getElementById('status-form').textContent = 'Formulário simulado para fins acadêmicos: os dados não são enviados a nenhum CRM.';
+    });
+
+    var cabecalho = document.querySelector('.site-header');
+    var ultimaPosicao = window.scrollY;
+    window.addEventListener('scroll', function () {
+      var atual = window.scrollY;
+      if (atual > ultimaPosicao && atual > 160) {
+        cabecalho.classList.add('oculto');
+      } else {
+        cabecalho.classList.remove('oculto');
+      }
+      ultimaPosicao = atual;
+    }, { passive: true });
+  })();
+</script>
+
+</body>
+</html>
